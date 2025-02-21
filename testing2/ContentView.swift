@@ -26,9 +26,21 @@ struct ContentView: View {
         NavigationView {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
-                    Text("Your stock")
-                        .font(.title)
-                        .padding(.horizontal)
+                    HStack {
+                        Text("Your stock")
+                            .font(.title)
+                        
+                        Spacer()
+                        
+                        NavigationLink(destination: StoreLocatorView()) {
+                            Image(systemName: "map.fill")
+                                .foregroundColor(.blue)
+                                .padding(12)
+                                .background(Color.blue.opacity(0.1))
+                                .clipShape(Circle())
+                        }
+                    }
+                    .padding(.horizontal)
                     
                     LazyVGrid(columns: [
                         GridItem(.flexible()),
