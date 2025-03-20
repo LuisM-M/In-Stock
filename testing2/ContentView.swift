@@ -21,40 +21,51 @@ struct ContentView: View {
         Food(name: "Spaghetti", image: "line.3.horizontal", quantity: 1, isFrozen: false),
         Food(name: "Garlic", image: "circle.circle", quantity: 1, isFrozen: false)
     ]
+    @State private var selectedTab = 0
     
     var body: some View {
         NavigationView {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 20) {
-                    HStack {
-                        Text("Your stock")
-                            .font(.title)
-                        
-                        Spacer()
-                        
-                        NavigationLink(destination: StoreLocatorView()) {
-                            Image(systemName: "map.fill")
-                                .foregroundColor(.blue)
-                                .padding(12)
-                                .background(Color.blue.opacity(0.1))
-                                .clipShape(Circle())
-                        }
-                    }
-                    .padding(.horizontal)
-                    
-                    LazyVGrid(columns: [
-                        GridItem(.flexible()),
-                        GridItem(.flexible())
-                    ], spacing: 20) {
-                        ForEach(foodItems) { food in
-                            NavigationLink(destination: FoodDetailView(food: food)) {
-                                FoodItemCard(food: food)
+            TabView(selection: $selectedTab) {
+                // Inventory View
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 20) {
+                        HStack {
+                            Text("Your stock")
+                                .font(.title)
+                            
+                            Spacer()
+                            
+                            NavigationLink(destination: StoreLocatorView()) {
+                                Image(systemName: "map.fill")
+                                    .foregroundColor(.blue)
+                                    .padding(12)
+                                    .background(Color.blue.opacity(0.1))
+                                    .clipShape(Circle())
                             }
                         }
+                        .padding(.horizontal)
+                        
+                        LazyVGrid(columns: [
+                            GridItem(.flexible()),
+                            GridItem(.flexible())
+                        ], spacing: 20) {
+                            ForEach(foodItems) { food in
+                                NavigationLink(destination: FoodDetailView(food: food)) {
+                                    FoodItemCard(food: food)
+                                }
+                            }
+                        }
+                        .padding()
                     }
-                    .padding()
                 }
+                .tag(0)
+                
+                // AI Assistant View
+                AIAssistantView()
+                    .tag(1)
             }
+            .tabViewStyle(.page)
+            .indexViewStyle(.page(backgroundDisplayMode: .always))
             .navigationBarItems(trailing: Button(action: {
                 // Add new item functionality
             }) {
