@@ -2,6 +2,7 @@ import SwiftUI
 
 struct AIAssistantView: View {
     @StateObject private var viewModel = AIAssistantViewModel()
+    @Environment(\.colorScheme) private var colorScheme
     
     var body: some View {
         VStack(spacing: 0) {
@@ -13,7 +14,7 @@ struct AIAssistantView: View {
                 Spacer()
             }
             .padding()
-            .background(Color.white)
+            .background(colorScheme == .dark ? Color.black : Color.white)
             
             // Chat messages
             ScrollViewReader { proxy in
@@ -57,7 +58,7 @@ struct AIAssistantView: View {
                     }
                 }
             }
-            .background(Color.gray.opacity(0.1))
+            .background(colorScheme == .dark ? Color.black : Color.gray.opacity(0.1))
             
             // Loading indicator
             if viewModel.isLoading {
@@ -68,7 +69,7 @@ struct AIAssistantView: View {
             // Input area
             ZStack {
                 RoundedRectangle(cornerRadius: 20)
-                    .fill(Color.white)
+                    .fill(colorScheme == .dark ? Color.gray.opacity(0.2) : Color.white)
                     .shadow(radius: 2)
                 
                 HStack(spacing: 12) {
@@ -106,6 +107,7 @@ struct AIAssistantView: View {
 
 struct ChatBubble: View {
     let message: AIAssistantViewModel.ChatMessage
+    @Environment(\.colorScheme) private var colorScheme
     
     var body: some View {
         HStack {
@@ -114,8 +116,14 @@ struct ChatBubble: View {
             VStack(alignment: message.isUser ? .trailing : .leading, spacing: 4) {
                 Text(message.content)
                     .padding(12)
-                    .background(message.isUser ? Color.blue : Color.white)
-                    .foregroundColor(message.isUser ? .white : .primary)
+                    .background(
+                        message.isUser ? Color.blue :
+                            (colorScheme == .dark ? Color.gray.opacity(0.3) : Color.white)
+                    )
+                    .foregroundColor(
+                        message.isUser ? .white :
+                            (colorScheme == .dark ? .white : .primary)
+                    )
                     .cornerRadius(15)
                     .shadow(radius: 1)
             }
