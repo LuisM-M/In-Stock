@@ -1,7 +1,7 @@
 import Foundation
 
 class AIAssistantViewModel: ObservableObject {
-    private let apiKey = "sk-ee61b9c8a6f04889a558b43fbd14cfb4"
+    private let apiKey = APIKeys.deepseekAPI
     private let baseURL = "https://api.deepseek.com/v1/chat/completions"
     
     @Published var messages: [ChatMessage] = []
